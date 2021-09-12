@@ -72,8 +72,45 @@
 </html>
 
 <!-- vue 플러그인 임포트   -->
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js"> /* vue 플러그인 임포트 */</script>
+<script>
+    new Vue({
+        el: "#app1",
+        data: {
+            msg: "Hello",
+        },
+        methods: {
+            app2BtnClick() {
+                alert('app2BtnClick');
+                this.$data.msg = 'abc';
+            }
+        },
+    });
 
+    // JS에서 Vue 객체를 구현하기
+    const data = {
+        msg: 'Hello',
+    };
 
+    Object.defineProperty(data, 'msg', {
+        get() {
+            // getter, 화면에서 값을 가져온다
+            return document.getElementById('app2').innerText;
+        },
+        set(value) {
+            // setter, 화면을 바꾼다
+            document.getElementById('app2').innerText = value;
+        },
+    });
+
+    console.log(data.msg);
+
+    data.msg = '123';
+
+    function app2BtnClick() {
+        data.msg = 'abc';
+    }
+</script>
 
 
 

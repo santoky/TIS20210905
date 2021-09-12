@@ -54,7 +54,7 @@
             콧수염 표현식을 사용한 데이터 바인딩 : <br>
             HTML이 아닌 일반 텍스트로 해석<br>
             <br>
-            <p>{{ message }}</p>
+            <p>{oper}</p>
         </div>
         <hr>
 
@@ -87,3 +87,24 @@
 </html>
 
 <!-- vue 플러그인 임포트   -->
+
+<!-- vue 플러그인 임포트   -->
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js">/* vue 플러그인 임포트 */</script>
+<script>
+    new Vue({
+        /* edtmc^2w */
+        el: "#app",
+        data: {
+            /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
+            message: 'hello',
+            reversedMessage: null,
+            awesome: 100,
+        },
+        computed: {
+            oper() {
+                return this.$data.awesone ? 100 : 0;
+            }
+        }
+    });
+
+</script>

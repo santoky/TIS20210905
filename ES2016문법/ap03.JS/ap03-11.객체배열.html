@@ -78,3 +78,34 @@
 </body>
 
 </html>
+
+<script>
+    debugger;
+    var objarray = [
+        { text: 'One', value: 'A' },
+        { text: 'Two', value: 'B' },
+        { text: 'Three', value: 'C' }
+    ];
+    console.log('1. 생성: ', objarray);
+
+    objarray[objarray.length] = { text: 'Four', value: 'D' };
+    console.log('2. 추가: ', objarray);
+
+    objarray[1] = { text: '2', value: '2' };
+    console.log('3. 수정: ', objarray);
+
+    console.log('4. 찾기: ', objarray.filter((value) => value.text === 'One'));
+
+    objarray.splice(2, 1);
+    console.log('5. 삭제: ', objarray);
+
+    const mapObj = objarray.map(function (obj, idx) {
+        return obj.no = idx;
+    });
+    console.log('6. map: ', mapObj);
+    debugger;
+    const mergedStr = objarray.reduce(function (str, obj) {
+        return str += obj.value;
+    },'');
+    console.log('7. reduce: ',  mergedStr);
+</script>
