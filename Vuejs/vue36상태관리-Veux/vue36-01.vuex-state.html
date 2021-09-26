@@ -136,9 +136,10 @@
              * 첫번째인자: 무조건 mutations로 고정.
              * 두번째인자: 값. store.dispatch()호출시 넘겨지는 값.
              */
-            set: function( mutations/* 고정 */, param ){
-                mutations.commit("set", param );
-            },
+            increment: function( mutations/* 고정 */, param ){
+                window.setTimeout(() => mutations.commit("increment", param ), 1000)},
+            decrement: function( mutations/* 고정 */, param ){
+                window.setTimeout(() => mutations.commit("decrement", param ), 1000)},
         },
         mutations: {
             /* 왜 mutations 를 사용하나? state 를 바꾸기 위해서
@@ -146,14 +147,17 @@
              * 첫번째인자: 무조건 state 로 고정.
              * 두번째인자: 값. mutations.commit() 호출시 넘겨지는 값.
              * */
-            set: function(state/* 고정 */, param/* mutations.commit 호출시 넘겨지는 값 */){
-                state.인자 = param;
+             increment: function(state/* 고정 */, param/* mutations.commit 호출시 넘겨지는 값 */){
+                state.counter = state.counter  + param;
+            },
+            decrement: function(state/* 고정 */, param/* mutations.commit 호출시 넘겨지는 값 */){
+                state.counter = state.counter  + param;
             },
         },
         state: {
             /* vue인스턴스나 컴포넌트의 data 프로퍼티에 해당 */
             welcome: 'HELLO WORLD 222',
-            counter: 0,
+            counter: 10,
         },
         getters: {
             /* state 변경 정보를 컴포넌트에 전달하는 역활.
@@ -184,10 +188,12 @@
         methods: {
             /* 이벤트 핸들러 등록 + 일반 함수 */
             increment () {
-                this.$set(this.$data, 'counter', this.$data.counter + 1);
+                // this.$set(this.$data, 'counter', this.$data.counter + 1);
+                store.dispatch('increment', +1);
             },
             decrement () {
-                this.$set(this.$data, 'counter', this.$data.counter - 1);
+                // this.$set(this.$data, 'counter', this.$data.counter - 1);
+                store.dispatch('decrement', -1);
             },
         },
         components: {

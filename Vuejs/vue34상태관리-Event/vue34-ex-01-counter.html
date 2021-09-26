@@ -85,12 +85,11 @@
         <p></p>
 
         <!-- Child 컴포넌트를 등록하고 counter 데이터 속성을 props로 전달한다. -->
-        <component-child></component-child>
-        <!-- <component-child
+        <component-child
             v-bind:num      ="counter"
             v-on:add-counter="addCounter"
             v-on:sub-counter="subCounter">
-        </component-child> -->
+        </component-child>
     </div>
 </body>
 
@@ -101,7 +100,6 @@
 <!-- vue 플러그인 임포트   -->
 <script src="https://unpkg.com/vue@2.6.14/dist/vue.js">/* vue 플러그인 임포트 */</script>
 <script>
-  // 작동안함
   var ComponentChild = {
       /* pdtmc^2w */
       props: ['num'] ,
@@ -146,8 +144,6 @@
           'component-child': ComponentChild,
       },
   });
-
-
 </script>
 
 
