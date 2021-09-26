@@ -80,16 +80,17 @@
 
     <div id="app" class="component-parent">
         Parent counter : {{ counter }} <br>
-        <button name="parent" v-on:click="addCounter(this.event, +1)">+</button>
-        <button name="parent" v-on:click="subCounter(this.event, -1)">-</button>
+        <button name="parent" v-on:click="addCounter(+1)">+</button>
+        <button name="parent" v-on:click="subCounter(-1)">-</button>
         <p></p>
 
         <!-- Child 컴포넌트를 등록하고 counter 데이터 속성을 props로 전달한다. -->
-        <component-child
+        <component-child></component-child>
+        <!-- <component-child
             v-bind:num      ="counter"
             v-on:add-counter="addCounter"
             v-on:sub-counter="subCounter">
-        </component-child>
+        </component-child> -->
     </div>
 </body>
 
@@ -97,5 +98,56 @@
 
 <!-- vue 플러그인 임포트   -->
 
+<!-- vue 플러그인 임포트   -->
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js">/* vue 플러그인 임포트 */</script>
+<script>
+  // 작동안함
+  var ComponentChild = {
+      /* pdtmc^2w */
+      props: ['num'] ,
+      template: `
+        <div class="component-child">
+            Child counter : {{ num }} <br>
+            <button name="child" v-on:click="addCounter">+</button>
+            <button name="child" v-on:click="subCounter">-</button>
+        </div>
+      `,
+      methods: {
+          /* 이벤트 핸들러 등록 + 일반 함수 */
+          addCounter () {
+            this.$emit('add-counter', +10);
+          },
+          subCounter () {
+            this.$emit('sub-counter', -10);
+          },
+      },
+  };
+
+  new Vue({
+      /* edtmc^2w */
+      el: "#app",
+      data: {
+          /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
+          counter: 0,
+      },
+      //template: ``,
+      methods: {
+          /* 이벤트 핸들러 등록 + 일반 함수 */
+          addCounter (param) {
+            this.$set(this.$data, 'counter', this.$data.counter + param);
+          },
+          subCounter (param) {
+            this.$set(this.$data, 'counter', this.$data.counter + param);
+          },
+      },
+      components: {
+          /* 전역 컴포넌트는 등록하지 않는다. */
+          /* 지역 컴포넌트나 파일 컴포넌트이면 등록해야 한다 . 예시) "태그명" : 컴포넌트명 */
+          'component-child': ComponentChild,
+      },
+  });
+
+
+</script>
 
 
