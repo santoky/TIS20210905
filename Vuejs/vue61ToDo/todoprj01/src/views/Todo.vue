@@ -71,6 +71,8 @@ export default {
         },
         removeTodo(id) {
             store.dispatch("removeTodo", id);
+            event.stopPropagation();
+            event.preventDefault();
         }
     },
     components: {
