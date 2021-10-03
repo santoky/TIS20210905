@@ -67,13 +67,11 @@ export default {
             store.dispatch("addTodo", newTodoItem);
         },
         doneToggle(id) {
-            const findIndex = this.$data.todoItems.findIndex(
-                (item) => item.id === id
-            );
-            this.$data.todoItems[findIndex].done =
-                !this.$data.todoItems[findIndex].done;
+            store.dispatch("doneToggle", id);
+        },
+        removeTodo(id) {
+            store.dispatch("removeTodo", id);
         }
-        // removeTodo(id) {}
     },
     components: {
         /* 전역 컴포넌트는 등록하지 않는다. */

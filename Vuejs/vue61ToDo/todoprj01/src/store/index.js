@@ -11,8 +11,17 @@ export default new Vuex.Store({
          * 첫번째인자: 무조건 mutations로 고정.
          * 두번째인자: 값. store.dispatch()호출시 넘겨지는 값.
          */
+        clearAll: function( mutations/* 고정 */){
+            mutations.commit("clearAll");
+        },
         addTodo: function( mutations/* 고정 */, param ){
             mutations.commit("addTodo", param );
+        },
+        doneToggle: function( mutations/* 고정 */, id ){
+            mutations.commit("doneToggle", id );
+        },
+        removeTodo: function( mutations/* 고정 */, id ){
+            mutations.commit("removeTodo", id );
         },
     },
     mutations: {
@@ -41,6 +50,23 @@ export default new Vuex.Store({
             };
 
             state.todoItems.push(todo);
+        },
+        clearAll: function(state/* 고정 */){
+            state.todoItems = [];
+        },
+        doneToggle: function(state/* 고정 */, id){
+            const findIndex = state.todoItems.findIndex(
+                (item) => item.id === id
+            );
+            state.todoItems[findIndex].done =
+                !state.todoItems[findIndex].done;
+        },
+        removeTodo: function(state/* 고정 */, param){
+            const findIndex = state.todoItems.findIndex((item) => {
+                return item.id === param;
+            });
+
+            state.todoItems.splice(findIndex, 1);
         },
     },
     state: {
