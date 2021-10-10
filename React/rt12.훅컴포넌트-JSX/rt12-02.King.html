@@ -46,13 +46,70 @@
     <hr>
 
     <div id="app">
-        <h3>세종대왕</h3>
+        <!-- <h3>세종대왕</h3>
         <h3>이순신</h3>
         <h3>광개토</h3>
-        <h3>왕건</h3>
+        <h3>왕건</h3> -->
 	</div>
 </body>
 
 </html>
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/7.2.2/react-redux.js">
+    /*  import ReactRedux, {Provider, useDispatch, useSelector} from 'react-redux' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.2.0/react-router-dom.js">
+    /*  import ReactRouterDOM, {BrowserRouter, Switch, Route, Redirect, Link, NavLink} from 'react-router-dom' */
+</script>
+<script src="https://unpkg.com/immer">
+    /* 불변객체 state를 조작하는 라이브러리. import immer from 'immer' */
+</script>
+<script type="text/babel">
+    // import React, { useState, useEffect, useRef, useCallback, useMemo, Fragment } from 'react';
+    // import PropTypes from 'prop-types';
+    // import ReactRedux, { Provider, useDispatch, useSelector } from 'react-redux';
+    // import ReactRouterDOM, { BrowserRouter, Switch, Route, Redirect, Link, NavLink, useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+    // import { takeEvery, put, call, all, fork, spawn } from 'redux-saga/effects';
+
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+
+    function KingContainer(props) {
+        const kings = [
+            { name: '세종대왕', index: 0 },
+            { name: '이순신', index: 1 },
+            { name: '광개토대왕', index: 2 },
+            { name: '왕건', index: 3 },
+        ];
+
+        return (
+            <div>
+                {kings.map((item) => <King name={item.name} idx={item.index} key={idx} />)}
+            </div>
+        )
+    }
+
+    function King(props) {
+        const { name, idx } = props;
+
+        return (
+            <div>
+                {name}{idx}
+            </div>
+        )
+    }
+
+    ReactDOM.render(<KingContainer />, document.getElementById('app'));
+
+</script>
