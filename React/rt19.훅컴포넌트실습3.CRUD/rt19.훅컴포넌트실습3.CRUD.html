@@ -314,3 +314,264 @@
 </body>
 </html>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+
+
+    function CrudContainer(props) {
+        const [ items, setItems ] = useState([
+            { id:1, name: "슈퍼맨", power: 100 },
+            { id:2, name: "아쿠아맨", power: 300 },
+            { id:3, name: "스파이더맨", power: 500 },
+            { id:4, name: "배트맨", power: 30 },
+        ]);
+
+        const callbackAdd = useCallback((param) => {
+            let maxid = 0;
+            if (items.length > 0) {
+                maxid = items.map(item => item.id).reduce((prev, curt) => prev >= curt ? prev : curt);
+            } else {
+                maxid = 0;
+            }
+
+            const newid = maxid + 1;
+            param.id = newid;
+
+            setItems([...items, param]);
+        },[items]);
+
+        const callbackDel = useCallback((param) => {
+            const newItems = items.filter((item) => {
+                return item.id !== param.id
+            });
+
+            setItems(newItems);
+        },[items]);
+
+        const callbackUp = useCallback((param) => {
+            const newItems = items.filter((item) => {
+                if( item.id === param.id) {
+                    item.power += 100;
+                }
+                return item
+            });
+            setItems(newItems);
+        },[items]);
+
+        const callbackDown = useCallback((param) => {
+            const newItems = items.filter((item) => {
+                if( item.id === param.id) {
+                    item.power -= 50;
+                }
+                return item
+            });
+            setItems(newItems);
+        },[items]);
+
+        const callbackSave = useCallback((param) => {
+            const newItems = items.filter((item) => {
+                if( item.id === param.id) {
+                    item.name = param.name;
+                    item.power = param.power;
+                }
+                return item
+            });
+            setItems(newItems);
+        },[items]);
+
+        return (
+            <div>
+                <h1>Creat Read Update Delete</h1>
+                <CrudInput callbackAdd={callbackAdd} />
+                <hr/>
+                <CrudList
+                    items={items}
+                    callbackDel={callbackDel}
+                    callbackUp={callbackUp}
+                    callbackDown={callbackDown}
+                />
+            </div>
+        )
+    }
+
+    function CrudInput(props) {
+        const inputName = useRef();
+        const inputPower = useRef();
+
+        const handlerAdd = (e) => {
+
+            if (inputPower.current.value === '') {
+                alert('power 값 입력하세요')
+                e.stopPropagation();
+                e.preventDefault();
+                inputPower.current.focus();
+                return false;
+            }
+
+            if (isNaN(Number(inputPower.current.value))) {
+                alert('power 숫자만 입력하세요')
+                e.stopPropagation();
+                e.preventDefault();
+                inputPower.current.focus();
+                inputPower.current.value = '';
+                return false;
+            }
+
+            var man = {
+                name: inputName.current.value,
+                power: Number(inputPower.current.value)
+            }
+            props.callbackAdd(man);
+
+            inputName.current.value = null;
+            inputPower.current.value = 0;
+        }
+
+        return (
+            <div>
+                <div>
+                    <label htmlFor="">Name : </label>
+                    <input type="text" ref={inputName} name="name" placeholder="이름을 입력하세요" />
+                </div>
+                <div>
+                    <label htmlFor="">Power : </label>
+                    <input type="number" ref={inputPower} name="power" placeholder="숫자를 입력하세요"  />
+                </div>
+                <button onClick={handlerAdd}>Add</button>
+            </div>
+        )
+    }
+    function CrudList(props) {
+        const { items, callbackDel, callbackUp, callbackDown, callbackSave } = props;
+
+        const arrs = items.map((item) => {
+            return (
+                <CrudListItem
+                    { ...props }
+                    item={item}
+                    key={item.id}
+                />
+            )}
+        )
+
+        return (
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>POWER</th>
+                        <th>CRUD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {arrs}
+                </tbody>
+            </table>
+        )
+    }
+
+    function CrudListItem(props) {
+        const { item,  callbackDel, callbackUp, callbackDown, callbackSave } = props
+
+        const [ isEditMode, setIsEditMode ] = useState(false);
+
+        const inputName = useRef();
+        const inputPower = useRef();
+
+        const handlerDel = (e) => {
+            callbackDel(item);
+        }
+
+        const handlerUp = (e) => {
+            callbackUp(item);
+        }
+
+        const handlerDown = (e) => {
+            callbackDown(item)
+        }
+
+        const handlerEdit = (e) => {
+            setIsEditMode(!isEditMode)
+        }
+
+        const handlerSave = (e) => {
+            setIsEditMode(!isEditMode)
+
+            const newItem = {
+                id: item.id,
+                name: inputName.current.value,
+                power: Number(inputPower.current.value)
+            }
+
+            props.callbackSave(newItem)
+        }
+
+        const strong = item.power >= 300 ? 'strong' : null
+
+        const formView = (
+            <tr className={strong}>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{item.power}</td>
+                <td>
+                    <button onClick={handlerDel}>Del</button>
+                    <button onClick={handlerUp}>Power Up</button>
+                    <button onClick={handlerDown}>Power Down</button>
+                    <button onClick={handlerEdit}>Edit</button>
+                </td>
+            </tr>
+        )
+
+        const formEdit = (
+            <tr className={strong}>
+                <td>{item.id}</td>
+                <td>
+                    <input
+                        type="text"
+                        ref={inputName}
+                        name="name"
+                        placeholder="이름을 입력하세요"
+                        defalutValue={item.name}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        ref={inputPower}
+                        name="power"
+                        placeholder="이름을 입력하세요"
+                        defalutValue={item.power}
+                    />
+                </td>
+                <td></td>
+                <td>
+                    <button onClick={handlerDel}>Del</button>
+                    <button onClick={handlerUp}>Power Up</button>
+                    <button onClick={handlerDown}>Power Down</button>
+                    <button onClick={handlerSave}>Save</button>
+                </td>
+            </tr>
+        )
+
+        if (isEditMode) {
+            return formEdit;
+        } else {
+            return formView;
+        }
+    }
+
+    ReactDOM.render(<CrudContainer />, document.getElementById('app'));
+</script>

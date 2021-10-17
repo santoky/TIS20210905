@@ -94,3 +94,70 @@
 
 </html>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
+    // import React, { useState, useEffect, useRef, useCallback, useMemo, Fragment } from 'react';
+    // import PropTypes from 'prop-types';
+    // import ReactRedux, { Provider, useDispatch, useSelector } from 'react-redux';
+    // import ReactRouterDOM, { BrowserRouter, Switch, Route, Redirect, Link, NavLink, useParams, useLocation, useHistory, useRouteMatch } from 'react-router-dom';
+    // import { takeEvery, put, call, all, fork, spawn } from 'redux-saga/effects';
+
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+
+    function CounterContainer(props) {
+        const [count, setCount] = useState(0);
+
+        const refIsMounted = useRef(false);
+        useEffect( () => {
+            if (refIsMounted.current){
+                // 업데이트 될 때마다 실행됨. 여러번. state 가 변경될 때마다
+                console.log('componentDidUpdate');
+            }
+            else {
+                // 마운트 완료 후에 실행됨. 한번만. focus 줄때
+                console.log('componentDidMount');
+                refIsMounted.current = true;
+            }
+        });
+
+        const callback = useCallback( (param)=>{
+        },[]);
+
+        const increase = (event)=>{
+            let step = 1;
+            event.shiftKey && (step = 10);
+            setCount(count + step)
+        };
+
+        return (
+            <div className="styleBackground">
+                <CounterLabel count={count}></CounterLabel>
+                <button className="styleButton" onClick={increase}>+</button>
+            </div>
+        )
+    }
+
+    function CounterLabel(props) {
+        const { count } = props;
+
+        return (
+            <div className="styleText">
+                {count}
+            </div>
+        )
+    }
+
+    ReactDOM.render(<CounterContainer />, document.getElementById('app'))
+
+</script>

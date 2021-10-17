@@ -65,3 +65,71 @@
 
 </html>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js">
+    /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.12.0/umd/react.development.js">
+    /* import React, { Component, PureComponent } from 'react' */
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.11.0/umd/react-dom.development.js">
+    /* import ReactDOM from 'react-dom' */
+</script>
+<script type="text/babel">
+    const { useState, useEffect, useRef, useCallback, useMemo, Fragment } = React;
+
+    function Greeting(props) {
+        const style = {
+            common: {
+                width: '100px',
+                height: '100px',
+                verticalAlign: 'center',
+                lineHeight: '100px',
+            },
+            get style1() {
+                return {
+                    ...this.common,
+                    background: 'gray'
+                }
+            },
+            get style2() {
+                return {
+                    ...this.common,
+                    background: 'yellow'
+                }
+            }
+        }
+
+        const refIsMounted = useRef(false);
+        useEffect( () => {
+            if (refIsMounted.current){
+                // 업데이트 될 때마다 실행됨. 여러번. state 가 변경될 때마다
+                console.log('componentDidUpdate');
+            }
+            else {
+                // 마운트 완료 후에 실행됨. 한번만. focus 줄때
+                console.log('componentDidMount');
+                refIsMounted.current = true;
+            }
+        });
+
+        const handlerClick1 = (event)=>{
+        };
+        const handlerClick2 = (event)=>{
+        };
+
+        return (
+            <div>
+                <div style={style.style1} onClick={handlerClick1}>
+                    div1
+                </div>
+                <div style={style.style2} onClick={handlerClick2}>
+                    div2
+                </div>
+            </div>
+        )
+    }
+
+    ReactDOM.render(<Greeting />, document.getElementById('app'));
+</script>
